@@ -8,6 +8,8 @@ from typing import (
 from urllib.parse import quote_plus
 
 from langchain_core.messages import (
+    AIMessage,
+    AIMessageChunk,
     BaseMessage,
     ToolMessage,
     convert_to_openai_messages,
@@ -45,6 +47,7 @@ from app.services.llm import llm_service
 from app.services.memory import memory_service
 from app.utils import (
     dump_messages,
+    extract_text_content,
     prepare_messages,
     process_llm_response,
 )
@@ -362,8 +365,12 @@ class LangGraphAgent:
                 config,
                 stream_mode="messages",
             ):
-                if isinstance(token.content, str) and token.content:
-                    yield token.content
+                if not isinstance(token, (AIMessage, AIMessageChunk)):
+                    continue
+
+                text = extract_text_content(token.content)
+                if text:
+                    yield text
 
             # After streaming completes, check for interrupt or update memory
             state = await self._graph.aget_state(config)
