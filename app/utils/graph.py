@@ -51,49 +51,54 @@ def dump_messages(messages: list[Message]) -> list[dict]:
     return [message.model_dump() for message in messages]
 
 
-def process_llm_response(response: BaseMessage) -> BaseMessage:
-    """Process LLM response to handle structured content blocks (e.g., from GPT-5 models).
+def extract_text_content(content: str | list) -> str:
+    """Extract plain text from an LLM content value.
 
-    GPT-5 models return content as a list of blocks like:
-    [
-        {'id': '...', 'summary': [], 'type': 'reasoning'},
-        {'type': 'text', 'text': 'actual response'}
-    ]
-
-    This function extracts the actual text content from such structures.
+    Handles both the simple string format and the structured block list returned
+    by GPT-5 / Responses API models:
+        [{'type': 'reasoning', ...}, {'type': 'text', 'text': '...'}]
 
     Args:
-        response: The raw response from the LLM
+        content: Raw content from a LangChain BaseMessage.
 
     Returns:
-        BaseMessage with processed content
+        Plain text string (empty string when nothing extractable is present).
+    """
+    if isinstance(content, str):
+        return content
+
+    parts: list[str] = []
+    for block in content:
+        if isinstance(block, str):
+            parts.append(block)
+        elif isinstance(block, dict):
+            if block.get("type") == "text":
+                parts.append(block.get("text", ""))
+            elif block.get("type") == "reasoning":
+                logger.debug(
+                    "reasoning_block_received",
+                    reasoning_id=block.get("id"),
+                    has_summary=bool(block.get("summary")),
+                )
+    return "".join(parts)
+
+
+def process_llm_response(response: BaseMessage) -> BaseMessage:
+    """Normalise a raw LLM response so that ``response.content`` is always a plain string, regardless of the provider's content format.
+
+    Args:
+        response: The raw response from the LLM.
+
+    Returns:
+        The same BaseMessage instance with ``content`` set to a plain string.
     """
     if isinstance(response.content, list):
-        # Extract text from content blocks
-        text_parts = []
-        for block in response.content:
-            if isinstance(block, dict):
-                # Handle text blocks
-                if block.get("type") == "text" and "text" in block:
-                    text_parts.append(block["text"])
-                # Log reasoning blocks for debugging
-                elif block.get("type") == "reasoning":
-                    logger.debug(
-                        "reasoning_block_received",
-                        reasoning_id=block.get("id"),
-                        has_summary=bool(block.get("summary")),
-                    )
-            elif isinstance(block, str):
-                text_parts.append(block)
-
-        # Join all text parts
-        response.content = "".join(text_parts)
+        response.content = extract_text_content(response.content)
         logger.debug(
             "processed_structured_content",
             content_block_count=len(response.content),
             extracted_length=len(response.content),
         )
-
     return response
 
 
