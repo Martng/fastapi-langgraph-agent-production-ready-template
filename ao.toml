@@ -1,0 +1,10 @@
+name = "poco"
+
+framework = "langgraph"
+entrypoint = "app.core.langgraph.graph:LangGraphAgent"
+
+python = "3.13"
+
+[runtime]
+max_retries = 3
+timeout = 300   # 5 minutes
