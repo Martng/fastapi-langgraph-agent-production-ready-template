@@ -4,7 +4,7 @@ A production-ready template for building AI agent backends with FastAPI and Lang
 
 **Built for AI engineers** who want a solid foundation, not a tutorial project.
 
-## What's included
+## What's includedasd
 
 - **LangGraph** stateful agent with checkpointing, tool calling, and human-in-the-loop support
 - **Long-term memory** via mem0 + pgvector — semantic search per user, cache-backed
@@ -29,18 +29,18 @@ Open [http://localhost:8000/docs](http://localhost:8000/docs) to see the interac
 
 ## Documentation
 
-| Guide | What it covers |
-|---|---|
-| [Getting Started](docs/getting-started.md) | Prerequisites, local setup, first API call |
-| [Architecture](docs/architecture.md) | System design, request flow, component diagrams |
-| [Configuration](docs/configuration.md) | All environment variables with defaults |
-| [Authentication](docs/authentication.md) | JWT flow, sessions, endpoint reference |
-| [Database & Migrations](docs/database.md) | Schema, Alembic migrations, pgvector |
-| [LLM Service](docs/llm-service.md) | Models, retries, fallback, timeout budget |
-| [Memory](docs/memory.md) | mem0 long-term memory, cache layer |
-| [Observability](docs/observability.md) | Langfuse, structured logging, Prometheus, profiling |
-| [Evaluation](docs/evaluation.md) | Eval framework, custom metrics, reports |
-| [Docker](docs/docker.md) | Docker, Compose, full monitoring stack |
+| Guide                                      | What it covers                                      |
+| ------------------------------------------ | --------------------------------------------------- |
+| [Getting Started](docs/getting-started.md) | Prerequisites, local setup, first API call          |
+| [Architecture](docs/architecture.md)       | System design, request flow, component diagrams     |
+| [Configuration](docs/configuration.md)     | All environment variables with defaults             |
+| [Authentication](docs/authentication.md)   | JWT flow, sessions, endpoint reference              |
+| [Database & Migrations](docs/database.md)  | Schema, Alembic migrations, pgvector                |
+| [LLM Service](docs/llm-service.md)         | Models, retries, fallback, timeout budget           |
+| [Memory](docs/memory.md)                   | mem0 long-term memory, cache layer                  |
+| [Observability](docs/observability.md)     | Langfuse, structured logging, Prometheus, profiling |
+| [Evaluation](docs/evaluation.md)           | Eval framework, custom metrics, reports             |
+| [Docker](docs/docker.md)                   | Docker, Compose, full monitoring stack              |
 
 ## Project structure
 
