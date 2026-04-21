@@ -4,7 +4,7 @@ A production-ready template for building AI agent backends with FastAPI and Lang
 
 **Built for AI engineers** who want a solid foundation, not a tutorial project.
 
-## What's includedasd
+## What's included
 
 - **LangGraph** stateful agent with checkpointing, tool calling, and human-in-the-loop support
 - **Long-term memory** via mem0 + pgvector — semantic search per user, cache-backed
